@@ -20,8 +20,13 @@ Common components:
 
 Shift registers come in two basic types, either SIPO, Serial-In-Parallel-Out, or PISO, Parallel-In-Serial-Out. SIPO is useful for controlling a large number of outputs, including LEDs, while the latter type, PISO, is good for gathering a large number of inputs, like buttons.
 
-SIPO Shift Registers - 74HC595
++ Daisy-chained infinitely to create a limitless number of outputs/inputs
++ Only ever requires 3 control pins
+- Can only operate as input _or_ output
+- A little slower than other methods
+- Only digital (1 bit per sensor)
 
+SIPO Shift Registers - 74HC595
 PISO Shift Registers - 74HC165, CD4021
 
 
