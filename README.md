@@ -21,26 +21,31 @@ Cons:
 ```Multiplexers are a good choice when you want to send or receive many analog signals.```
 
 ## Shift Registers
-
-Shift registers come in two basic types, either SIPO, Serial-In-Parallel-Out, or PISO, Parallel-In-Serial-Out. SIPO is useful for controlling a large number of outputs, including LEDs, while the latter type, PISO, is good for gathering a large number of inputs, like buttons.
+Shift registers come in two common basic types:
+ - Serial-In-Parallel-Out (SIPO), e.g. **74HC595** used for controlling a large number of outputs (e.g. LEDs).
+ - Parallel-In-Serial-Out (PISO), e.g.  **74HC165** or **CD4021** used for gathering a large number of inputs (e.g. buttons).
 
 Pros:
 + Daisy-chained infinitely to create a limitless number of outputs/inputs (although would take more time to clock data in/out)
 + Only ever requires 3 control pins
 Cons:
-- Can only operate as input _or_ output
+- A given shift register can only operate as input _or_ output
 - A little slower than other methods
 - Only digital (1 bit per sensor)
 
-SIPO Shift Registers - **74HC595**
-PISO Shift Registers - **74HC165**, **CD4021**
+```Shift registers are a good choice when you want a simple, cheap way to interface with _many_ (i.e  hundreds of) "dumb" inputs (buttons) or outputs (LEDs) that don't require complex protocols, timings etc.```
 
-```Shift registers are a good choice when you want a simple, cheap way to interface with _many_ "dumb" inputs (buttons) or outputs (LEDs) that don't require complex protocols, timings etc.```
+As an example implementation, this is what the Kincony <a href="https://www.kincony.com/download/KC868-A256-schematic.pdf">KC868-A256</a> board uses:
+ - 256 outputs via 32xchained 74HC595 registers (GPIO5=Data, GPIO16=Clock, GPIO4=Latch) sent to ULN2803 transistor array.
+ - 256 inputs via 32xchained 74HC165 registers (GPIO15=Data, GPIO32=Clock, GPIO33=Load) received via PS2801 optocoupler array.
+
 
 ## GPIO Expanders
+GPIO expanders provide additional input/output pins that behave almost exactly the same way as built-in GPIO pins - with interrupt capability, built-in pull-up resistors, can accommodate a range of input voltages etc.
  - **MCP23017** (16 GPIOs from I2C interface, with 3 address pins, you can have up to 8 on a single bus for a total of 8 x 16 = 128 GPIO)
  - **MCP23S17** (as above, but using SPI interface. Somewhat faster, but requires more pins)
  - **PCF8574** (8 GPIOs from I2C interface, with 3 address pins, you can have up to 8 on a single bus for a total of 8 x 8 = 64 GPIO)
+ - **PCF8575** (16 GPIOs from I2C interface, with 3 address pins, you can have up to 8 on a single bus for a total of 8 x 16 = 128 GPIO)
 
 Pros:
 + Each channel can be digital input/output, just like a regular GPIO pin complete with pull-up resistors, interrupts etc.
@@ -50,6 +55,13 @@ Cons:
 
 ```GPIO expanders are a good choice when you want to add more general purpose digital pins, that behave almost exactly the same as the built-in GPIO pins.```
 
+As an example implementation, this is what the Kincony <a href="https://www.kincony.com/download/KC868-A64-schematic.pdf">KC868-A64</a> board uses:
+ - 64 outputs via 4x PCF8575 expanders on I2C bus A(GPIO5=SDA, GPIO16=SCL).
+ - 64 inputs via 4x PCF8575 expanders on I2C bus B(GPIO15=SDA, GPIO4=SCL).
+
+The <a href="https://www.kincony.com/download/KC868-A128-schematic.pdf">KC868-A128</a> board uses exactly the same approach but uses twice as many expanders for both inputs and outputs:
+ - 128 outputs via 8x PCF8575 expanders on I2C bus A(GPIO5=SDA, GPIO16=SCL).
+ - 128 inputs via 8x PCF8575 expanders on I2C bus B(GPIO15=SDA, GPIO4=SCL).
 
 ## I2C Multiplexers
 TCA9548A
