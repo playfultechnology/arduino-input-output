@@ -49,6 +49,7 @@ GPIO expanders provide additional input/output pins that can be read/written in 
  - **PCF8575** (16 GPIOs from I2C interface, with 3 address pins, you can have up to 8 on a single bus for a total of 8 x 16 = 128 GPIO)
 
 Of the options presented above, MCP23017 is the preferred choice - it offers the most channels, has a greater range of operating voltages, provides interrupt capability, and has per-channel pull-up resistors. And it costs about $2: https://www.aliexpress.com/item/32665631086.html
+Note that the PCF857x chips will require external pull-up/pull-down resistors on every input channel.
 
 Useful Libraries:
 - https://github.com/RobTillaart/PCF8574
