@@ -25,7 +25,8 @@ Shift registers come in two common basic types:
  - Serial-In-Parallel-Out (SIPO), e.g. **74HC595** used for controlling a large number of outputs (e.g. LEDs).
  - Parallel-In-Serial-Out (PISO), e.g.  **74HC165** or **CD4021** used for gathering a large number of inputs (e.g. buttons).
 
-Pushing data to a SIPO register, or pulling it from a PISO register, requires a clock, data, and latch line (as in an SPI interface). Those can make use of the dedicated SPI hardware on a microprocessor (i.e. SS10, MOSI11, MISO12, SCK13) and the SPI.transfer() method, or can use any arbitrary GPIO pins using the shiftIn()/shiftOut() methods.
+Pushing data to a SIPO register, or pulling it from a PISO register, requires a clock, data, and latch line (as in an SPI interface). Indeed, shift registers can make use of the dedicated SPI hardware on a microprocessor (i.e. SS10, MOSI11, MISO12, SCK13) and the SPI.transfer() method. BUT beware that they do not typically tristate the output line when not in use, which means that they cannot share that interface with other SPI devices. 
+Instead, it is generally preferable to use the shiftIn()/shiftOut() methods, which can make use of any arbitrary GPIO pins.
 Once a single register has been connected, further ones can be chained to the output of the last "for free" with no additional lines.
 
 Pros:
