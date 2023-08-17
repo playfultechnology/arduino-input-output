@@ -41,19 +41,29 @@ As an example implementation, this is what the Kincony <a href="https://www.kinc
 
 
 ## GPIO Expanders
-GPIO expanders provide additional input/output pins that behave almost exactly the same way as built-in GPIO pins - with interrupt capability, built-in pull-up resistors, can accommodate a range of input voltages etc.
+GPIO expanders provide additional input/output pins that can be read/written in a similar way to built-in digital GPIO pins, via an I2C or SPI interface:
+ - **MCP23008** (8 GPIOs from I2C interface, with 3 address pins, you can have up to 8 on a single bus for a total of 8 x 8 = 64 GPIO)
  - **MCP23017** (16 GPIOs from I2C interface, with 3 address pins, you can have up to 8 on a single bus for a total of 8 x 16 = 128 GPIO)
  - **MCP23S17** (as above, but using SPI interface. Somewhat faster, but requires more pins)
  - **PCF8574** (8 GPIOs from I2C interface, with 3 address pins, you can have up to 8 on a single bus for a total of 8 x 8 = 64 GPIO)
  - **PCF8575** (16 GPIOs from I2C interface, with 3 address pins, you can have up to 8 on a single bus for a total of 8 x 16 = 128 GPIO)
 
+Of the options presented above, MCP23017 is the preferred choice - it offers the most channels, has a greater range of operating voltages, provides interrupt capability, and has per-channel pull-up resistors. And it costs about $2: https://www.aliexpress.com/item/32665631086.html
+
+Useful Libraries:
+- https://github.com/RobTillaart/PCF8574
+- https://github.com/RobTillaart/PCF8575
+- https://github.com/RobTillaart/MCP23008
+- https://github.com/RobTillaart/MCP23017_RT
+- https://github.com/RobTillaart/MCP23S17
+
 Pros:
 + Each channel can be digital input/output, just like a regular GPIO pin complete with pull-up resistors, interrupts etc.
 + Uses I2C interface which requires only 2 pins, or 3 pin SPI interface
 Cons:
-- Only works with digital inputs/outputs
+- Only works with digital inputs/outputs - do not support analog read/write operations.
 
-```GPIO expanders are a good choice when you want to add more general purpose digital pins, that behave almost exactly the same as the built-in GPIO pins.```
+```GPIO expanders are a good choice when you want to add more general purpose digital pins that (can) behave almost exactly the same as the built-in GPIO pins.```
 
 As an example implementation, this is what the Kincony <a href="https://www.kincony.com/download/KC868-A64-schematic.pdf">KC868-A64</a> board uses:
  - 64 outputs via 4x PCF8575 expanders on I2C bus A(GPIO5=SDA, GPIO16=SCL).
